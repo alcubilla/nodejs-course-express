@@ -1,0 +1,9 @@
+table#table_format.table.table-bordered.table-dark.table-hover
+    each image in images
+        tr 
+            th 
+                img(src='/images/' + image, width="100px")
+            th
+                p=image
+            th 
+                a.btn.btn-icon.btn-icon-center.btn-primary(href='/download/'+ image)=image

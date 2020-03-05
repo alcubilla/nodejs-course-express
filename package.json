@@ -2,15 +2,28 @@
   "name": "code-examples",
   "version": "1.0.0",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "dev:15": "nodemon --exec babel-node Ejercicio-cinema.js",
+    "dev:14": "nodemon --exec babel-node ejercicio-express.js",
+    "dev:16": "nodemon --exec babel-node 15-responses.js",
+    "dev:17": "nodemon --exec babel-node 16-ejercicio.js",
+    "dev:18": "nodemon --exec babel-node 18-render.js",
+    "dev:19": "nodemon --exec babel-node 17-sub-app.js"
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "body-parse": "^0.1.0",
+    "@babel/core": "^7.8.4",
+    "@babel/node": "^7.8.4",
     "body-parser": "^1.19.0",
-    "express": "^4.17.1"
+    "core-js": "^3.6.4",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "pug": "^2.0.4",
+    "uuid": "^7.0.2"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.8.4",
     "nodemon": "^2.0.2"
   },
   "description": ""
