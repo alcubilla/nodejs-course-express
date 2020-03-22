@@ -8,17 +8,22 @@
     "dev:16": "nodemon --exec babel-node 15-responses.js",
     "dev:17": "nodemon --exec babel-node 16-ejercicio.js",
     "dev:18": "nodemon --exec babel-node 18-render.js",
-    "dev:19": "nodemon --exec babel-node 17-sub-app.js"
+    "dev:19": "nodemon --exec babel-node 17-sub-app.js",
+    "dev:20": "nodemon --exec babel-node 19-mysql.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@babel/core": "^7.8.4",
     "@babel/node": "^7.8.4",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-bearer-token": "^2.4.0",
+    "jsonwebtoken": "^8.5.1",
+    "mysql": "^2.18.1",
     "pug": "^2.0.4",
     "uuid": "^7.0.2"
   },

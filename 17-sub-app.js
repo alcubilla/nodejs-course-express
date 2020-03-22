@@ -1,31 +1,45 @@
 import http from 'http';
 import express from 'express';
-import productsRoutes from './online_store/productsRoutes'
-import productsList from './online_store/products'
-import adminRoutes from './online_store/adminRoutes'
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import bearerToken from 'express-bearer-token'
 
+import productsList from './online_store/products'
+import productsRoutes from './online_store/productsRoutes'
+import users from './users'
+import setDate from './middlewares/setDate'
+import logger from './middlewares/logger'
+import { matchHash, createToken } from './hasher';
+
+import status from './middlewares/status'
+import authorize from './middlewares/authorize'
+
+dotenv.config();
 
 const APP = express();
-APP.use(express.json()); //para usar el body
-
-
 const PRODUCTS = express();
-const ADMIN = express();
 
 let total = 0;
 
+APP.use(bodyParser.json());
 APP.use('/products', PRODUCTS);
-APP.use('/admin', ADMIN);
-
+PRODUCTS.use(bearerToken()); //si encuentra un token lo almacena en req.token
+PRODUCTS.use(setDate); //use espera una funcion 
+PRODUCTS.use(logger);
+PRODUCTS.use(authorize);
 const SERVER = http.createServer(APP);
 
-APP.get('/', (req,res) => {
-    res.send('API HOME'); 
-});
+APP.post('/login',status(users), (req,res) => {
+    const {user, password} = req.body;
+    if(user === req.currentUser.USER && matchHash(password, req.currentUser.PASSWORD)){
+    const newToken = createToken({ user });
+    res.json({status: 'ok' , result: newToken})
+    }else{
+        res.status(401).json({msg: "Usuario NO autorizado"});
+    }
+   
+}); 
 
-
-total = productsRoutes(PRODUCTS, productsList, total);
-
-adminRoutes(ADMIN, productsList,total);
+productsRoutes(PRODUCTS, productsList, total);
 
 SERVER.listen(5000);

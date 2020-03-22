@@ -1,7 +1,10 @@
+import hasProduct from '../middlewares/hasProduct'
+
 export default (PRODUCTS,productsList, total) => {
 
   //mostrar  
   PRODUCTS.get ('/', (req, res) => {
+   
       const viewActive = Number(req.query.status) === 1;
       const activeProducts = viewActive
       ? productsList.filter(p => p.stock > 0)
@@ -10,41 +13,23 @@ export default (PRODUCTS,productsList, total) => {
   });
 
   //mostrar por id
-  PRODUCTS.get('/:id',(req,res)=>{
-    const product= productsList.find(p => p.id === req.params.id);
-    if(product){
-    res.json({status:'ok', result: product});
-    }else{
-        res.sendStatus(404);
-    }
-   
+  PRODUCTS.get('/:id',hasProduct(productsList), (req,res)=>{
+    res.json({status:'ok', result: req.product});
   })
 
   //comprar
-  PRODUCTS.put('/:id',(req,res)=>{
-    const product= productsList.find(p => p.id === req.params.id);
-    if(product.stock >0 && product){
-    product.stock--;
-    total += product.value;
+  PRODUCTS.put('/:id',hasProduct(productsList),(req,res)=>{ 
+    req.product.stock--;
+    total += req.product.value;
     console.log(total)
-    res.json({status:'ok', result: product});
-     
-    }else{
-      res.sendStatus(404);
-    }
-   
+    res.json({status:'ok', result: req.product});
+    
   })
 
   //borrar
-  PRODUCTS.delete('/:id',(req,res)=>{
-    const product= productsList.find(p => p.id === req.params.id);
-    if(product){
+  PRODUCTS.delete('/:id',hasProduct(productsList),(req,res)=>{
     productsList = productsList.filter(p => p.id !== req.params.id)
     res.json({status:'ok', result: productsList});
-    }else{
-        res.sendStatus(404);
-    }
-   
   })
   return total
 }
